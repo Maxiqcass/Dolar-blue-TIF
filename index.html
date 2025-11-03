@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <title>Cotización Dólar Blue</title>
   <style>
-    body { font-family: Arial; text-align:center; margin-top:50px; }
-    input, button { padding:10px; margin:5px; }
-    #resultado { margin-top:20px; }
+    body { 
+      font-family: Arial; 
+      text-align: center; 
+      margin-top: 50px; 
+      background-color: #d3d3d3; /* gris claro */
+    }
+    input, button { 
+      padding: 10px; 
+      margin: 5px; 
+    }
+    #resultado { 
+      margin-top: 20px; 
+      font-size: 1.2em; 
+    }
   </style>
 </head>
 <body>
@@ -19,12 +30,11 @@
     const PALABRA_SECRETA = "quispe-cassaigne-298";
 
     document.getElementById("btn").addEventListener("click", async () => {
-      const dni = document.getElementById("dni").value.trim();
       const secreto = document.getElementById("secreto").value.trim();
       const resultado = document.getElementById("resultado");
 
-      if (!dni || !secreto) {
-        alert("Ingresá DNI y palabra secreta");
+      if (!secreto) {
+        alert("Ingresá la palabra secreta");
         return;
       }
 
