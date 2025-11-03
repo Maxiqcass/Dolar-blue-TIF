@@ -2,37 +2,61 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Trabajo Práctico - Dólar Blue</title>
+  <title>Cotización Dólar Blue</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      text-align: center;
-      padding-top: 100px;
-    }
-    h1 {
-      color: #333;
-    }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #1e90ff;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-    }
-    a:hover {
-      background-color: #0077ff;
-    }
+    body { font-family: Arial; text-align:center; margin-top:50px; }
+    input, button { padding:10px; margin:5px; }
+    #resultado { margin-top:20px; }
   </style>
 </head>
 <body>
-  <h1>Trabajo Práctico: Cotización del Dólar Blue 💵</h1>
-  <p>Alumno: <b>Maximo Quispe Cassaigne</b></p>
-  <p>Materia: Desarrollo de Aplicaciones</p>
-  <p>Para ejecutar el código, abrí el siguiente archivo:</p>
-  <a href="./app.js" target="_blank">Ver código fuente (app.js)</a>
+  <h1>💵 Cotización del Dólar Blue</h1>
+  <input type="text" id="dni" placeholder="DNI"><br>
+  <input type="password" id="secreto" placeholder="Palabra secreta"><br>
+  <button id="btn">Consultar</button>
+  <div id="resultado"></div>
+
+  <script>
+    const PALABRA_SECRETA = "quispe-cassaigne-298";
+
+    document.getElementById("btn").addEventListener("click", async () => {
+      const dni = document.getElementById("dni").value.trim();
+      const secreto = document.getElementById("secreto").value.trim();
+      const resultado = document.getElementById("resultado");
+
+      if (!dni || !secreto) {
+        alert("Ingresá DNI y palabra secreta");
+        return;
+      }
+
+      if (secreto !== PALABRA_SECRETA) {
+        resultado.innerHTML = "<span style='color:red'>❌ Palabra secreta inválida</span>";
+        return;
+      }
+
+      resultado.innerHTML = "⏳ Obteniendo cotización...";
+
+      try {
+        const res = await fetch("https://dolarapi.com/v1/dolares/blue");
+        const data = await res.json();
+        const compra = data.compra;
+        const venta = data.venta;
+        const promedio = ((compra + venta)/2).toFixed(2);
+        const fecha = new Date(data.fechaActualizacion).toLocaleString("es-AR");
+
+        resultado.innerHTML = `
+          💰 Compra: $${compra} <br>
+          💵 Venta: $${venta} <br>
+          📊 Promedio: $${promedio} <br>
+          🕓 Fecha: ${fecha}
+        `;
+      } catch(e) {
+        resultado.innerHTML = "<span style='color:red'>Error al obtener la cotización</span>";
+        console.error(e);
+      }
+    });
+  </script>
 </body>
 </html>
+
 
